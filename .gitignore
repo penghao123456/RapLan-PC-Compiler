@@ -1,0 +1,6 @@
+# Build
+build/
+a.out
+
+# YCM Config
+.ycm_extra_conf.py
