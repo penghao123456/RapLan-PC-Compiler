@@ -12,6 +12,7 @@ typedef char * path;
 #define BUF_SIZE (int)2*2*2*2*2*2*2*2*2*2*2*2*2*2*2*2-1 // Buffer size
 
 #define min(a,b) ((a)<(b)?(a):(b))
+#define genptr(sz,base) (byte*)(((sz)[1]<<8)+(sz)[0]+base-1)
 
 static byte buf [BUF_SIZE];
 static struct stat *file_stat;
@@ -39,7 +40,7 @@ int main(int argc, char **argv){
                 perror(
                         "RUNTIME ERROR: HEADER ERROR\n"
                         "Send error report, please.\n"
-                        "POS:VM.c:41"
+                        "POS:VM.c:40"
                 );
                 abort();
         }
@@ -55,7 +56,7 @@ int main(int argc, char **argv){
                                                 perror(
                                                         "RUNTIME ERROR: MEM LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:54"
+                                                        "POS:VM.c:56"
                                                 );
                                                 abort();
                                         }
@@ -67,7 +68,7 @@ int main(int argc, char **argv){
                                                 perror(
                                                         "RUNTIME ERROR: MEM LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:66"
+                                                        "POS:VM.c:68"
                                                 );
                                                 abort();
                                         }
@@ -79,7 +80,7 @@ int main(int argc, char **argv){
                                                 perror(
                                                         "RUNTIME ERROR: MEM LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:18"
+                                                        "POS:VM.c:80"
                                                 );
                                                 abort();
                                         }
@@ -91,7 +92,7 @@ int main(int argc, char **argv){
                                                 perror(
                                                         "RUNTIME ERROR: MEM LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:90"
+                                                        "POS:VM.c:92"
                                                 );
                                                 abort();
                                         }
@@ -103,7 +104,7 @@ int main(int argc, char **argv){
                                                 perror(
                                                         "RUNTIME ERROR: MEM LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:102"
+                                                        "POS:VM.c:104"
                                                 );
                                                 abort();
                                         }
@@ -113,37 +114,103 @@ int main(int argc, char **argv){
                                         memcpy(args, ++ptr, 2);
                                         if (args[0] >= file_stat->st_size){
                                                 perror(
-                                                        "RUNTIME ERROR: MEM LIMIT ERROR\n"
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
                                                         "Send error report, please.\n"
-                                                        "POS:VM.c:102"
+                                                        "POS:VM.c:116"
                                                 );
                                                 abort();
                                         }
-                                        ptr = (byte*)((args[1]<<8)+args[0]+buf);
+                                        ptr = genptr(args, memory);
                                         break;
                                 case ACTION_JLS:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:128"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]<memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 case ACTION_JLE:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:142"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]<memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 case ACTION_JGT:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:156"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]>memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 case ACTION_JGE:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:170"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]<memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 case ACTION_JEQ:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:184"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]==memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 case ACTION_JNE:
-                                        /* TODO */
+                                        memcpy(args, ++ptr, 4);
+                                        if (args[0] >= file_stat->st_size){
+                                                perror(
+                                                        "RUNTIME ERROR: RAP LIMIT ERROR\n"
+                                                        "Send error report, please.\n"
+                                                        "POS:VM.c:198"
+                                                );
+                                                abort();
+                                        }
+                                        if (memory[args[2]]!=memory[args[3]]){
+                                                ptr = genptr(args, memory);
+                                        }
                                         break;
                                 default:
                                         perror(
                                                 "RUNTIME ERROR: ACTION ERROR\n"
                                                 "Send error report, please.\n"
-                                                "POS:VM.c:???"
+                                                "POS:VM.c:210"
                                         );
                                         abort();
                         }

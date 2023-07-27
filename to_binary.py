@@ -45,5 +45,5 @@ for index,i in enumerate(allowed_heads):
 else:
     print("\x1b[31m%s:1: ERROR: What's your name?\x1b[0m" % args.input)
 
-for i in range():
+for index,i in enumerate(rap[ 1 if matched=1 else 4 :]):
     pass
